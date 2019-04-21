@@ -8,13 +8,9 @@ import java.util.Scanner;
 
 public class SignalCommand implements Runnable {
 
-    private Thread t;
-    private String threadName;
     private static SignalServer signalServer;
 
-    public SignalCommand(String name) {
-        this.threadName = name;
-        System.out.println("Creating " +  threadName);
+    public SignalCommand() {
     }
 
     @Override
@@ -38,14 +34,6 @@ public class SignalCommand implements Runnable {
         }
     }
 
-    public void start() {
-        System.out.println("Starting " +  threadName);
-
-        if (t == null) {
-            t = new Thread (this, threadName);
-            t.start ();
-        }
-    }
 
     public static void main(String[] args) {
         BasicConfigurator.configure();
@@ -53,8 +41,9 @@ public class SignalCommand implements Runnable {
         String host = "localhost";
         int port = 8888;
 
-        SignalCommand signalCommand = new SignalCommand("Signal Command");
-        signalCommand.start();
+        SignalCommand signalCommand = new SignalCommand();
+        Thread thread = new Thread(signalCommand);
+        thread.start();
 
         // Create signal server
         signalServer = new SignalServer(new InetSocketAddress(host, port));

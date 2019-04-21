@@ -1,7 +1,6 @@
 package itb.sister.crdt.signal;
 
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
