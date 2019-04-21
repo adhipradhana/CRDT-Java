@@ -3,6 +3,8 @@ package itb.sister.crdt.nodes;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import com.google.gson.Gson;
@@ -10,12 +12,15 @@ import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-public class ClientSignalNode extends WebSocketClient  {
+public class ControllerNode extends WebSocketClient  {
 
+    private Map<String, Boolean> previousServerList = new HashMap<>();
     private String[] serverList;
+
+    private static InterfaceNode interfaceNode;
     private static String nodeServerAddress;
 
-    public ClientSignalNode(URI serverURI) {
+    public ControllerNode(URI serverURI) {
         super(serverURI);
     }
 
@@ -45,11 +50,15 @@ public class ClientSignalNode extends WebSocketClient  {
 
     private void initializePeerToPeerConnection() {
         for (int i = 0; i < serverList.length; i++) {
-            try {
-                WebSocketClient webSocketClient = new ClientSignalNode(new URI(serverList[i]));
-                webSocketClient.connect();
-            } catch (URISyntaxException ex) {
-                ex.printStackTrace();
+            if (!previousServerList.containsKey(serverList[i]) || !previousServerList.get(serverList[i])) {
+                try {
+                    ClientPeerNode peerNode = new ClientPeerNode(new URI(serverList[i]));
+                    peerNode.connect();
+                    previousServerList.put(serverList[i], true);
+                    interfaceNode.addClientPeer(peerNode);
+                } catch (URISyntaxException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
@@ -73,10 +82,6 @@ public class ClientSignalNode extends WebSocketClient  {
         }
     }
 
-    public String[] getServerList() {
-        return serverList;
-    }
-
     public static void main(String[] args) throws URISyntaxException {
         BasicConfigurator.configure();
         Random rand = new Random();
@@ -85,11 +90,15 @@ public class ClientSignalNode extends WebSocketClient  {
         String host = "localhost";
         int port = rand.nextInt(10000) + 40000;
 
-        WebSocketClient client = new ClientSignalNode(new URI(signalServerAddress));
+        WebSocketClient client = new ControllerNode(new URI(signalServerAddress));
         client.connect();
 
         ServerPeerNode serverNode = new ServerPeerNode(new InetSocketAddress(host, port));
         nodeServerAddress = serverNode.getWebSocketAddress();
         serverNode.start();
+
+        interfaceNode = new InterfaceNode(nodeServerAddress);
+        Thread interfaceThread = new Thread(interfaceNode);
+        interfaceThread.start();
     }
 }

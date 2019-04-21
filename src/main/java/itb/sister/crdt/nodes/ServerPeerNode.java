@@ -6,11 +6,11 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 
-public class ServerNode extends WebSocketServer {
+public class ServerPeerNode extends WebSocketServer {
 
     private String webSocketAddress;
 
-    public ServerNode(InetSocketAddress address) {
+    public ServerPeerNode(InetSocketAddress address) {
         super(address);
         this.webSocketAddress = "ws://" + address.getHostName() + ":" + address.getPort();
     }
