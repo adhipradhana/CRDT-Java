@@ -3,7 +3,6 @@ package itb.sister.crdt.nodes;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
 import java.util.Random;
 
 import com.google.gson.Gson;
@@ -11,13 +10,12 @@ import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-public class ClientNode extends WebSocketClient {
+public class ClientSignalNode extends WebSocketClient  {
 
     private String[] serverList;
-    private static String signalServerAddress = "ws://localhost:8888";
     private static String nodeServerAddress;
 
-    public ClientNode(URI serverURI) {
+    public ClientSignalNode(URI serverURI) {
         super(serverURI);
     }
 
@@ -37,16 +35,23 @@ public class ClientNode extends WebSocketClient {
         System.out.println("received message: " + message);
 
         parseConnectionList(message);
-    }
-
-    @Override
-    public void onMessage(ByteBuffer message) {
-        System.out.println("received ByteBuffer");
+        initializePeerToPeerConnection();
     }
 
     @Override
     public void onError(Exception ex) {
         System.err.println("an error occurred:" + ex);
+    }
+
+    private void initializePeerToPeerConnection() {
+        for (int i = 0; i < serverList.length; i++) {
+            try {
+                WebSocketClient webSocketClient = new ClientSignalNode(new URI(serverList[i]));
+                webSocketClient.connect();
+            } catch (URISyntaxException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     private void parseConnectionList(String message) {
@@ -68,19 +73,23 @@ public class ClientNode extends WebSocketClient {
         }
     }
 
+    public String[] getServerList() {
+        return serverList;
+    }
+
     public static void main(String[] args) throws URISyntaxException {
         BasicConfigurator.configure();
         Random rand = new Random();
+        String signalServerAddress = "ws://localhost:8888";
 
         String host = "localhost";
         int port = rand.nextInt(10000) + 40000;
 
-        ServerNode serverNode = new ServerNode(new InetSocketAddress(host, port));
-        nodeServerAddress = serverNode.getWebSocketAddress();
-        Thread thread = new Thread(serverNode);
-        thread.start();
-
-        WebSocketClient client = new ClientNode(new URI(signalServerAddress));
+        WebSocketClient client = new ClientSignalNode(new URI(signalServerAddress));
         client.connect();
+
+        ServerPeerNode serverNode = new ServerPeerNode(new InetSocketAddress(host, port));
+        nodeServerAddress = serverNode.getWebSocketAddress();
+        serverNode.start();
     }
 }

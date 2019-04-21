@@ -6,10 +6,9 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 
-public class ServerNode extends WebSocketServer implements Runnable {
+public class ServerNode extends WebSocketServer {
 
     private String webSocketAddress;
-    private boolean startServer = false;
 
     public ServerNode(InetSocketAddress address) {
         super(address);
@@ -41,20 +40,8 @@ public class ServerNode extends WebSocketServer implements Runnable {
         System.out.println("Node server started successfully");
     }
 
-    @Override
-    public void run() {
-        if (!startServer) {
-            System.out.println("asuu");
-            startServer = true;
-            this.start();
-        }
-    }
-
     public String getWebSocketAddress() {
         return webSocketAddress;
     }
 
-    public void setWebSocketAddress(String webSocketAddress) {
-        this.webSocketAddress = webSocketAddress;
-    }
 }
