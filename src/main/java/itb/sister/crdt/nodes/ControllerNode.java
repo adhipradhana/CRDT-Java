@@ -7,7 +7,6 @@ import java.util.*;
 
 import com.google.gson.Gson;
 import org.apache.log4j.BasicConfigurator;
-import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -101,6 +100,7 @@ public class ControllerNode extends WebSocketClient  {
         interfaceNode = new InterfaceNode(nodeServerAddress);
         interfaceNode.setServerPeerNode(serverPeerNode);
         interfaceNode.setClientSignal(client);
+        InterfaceNode.getVersionVector().put(nodeServerAddress, 0);
         Thread interfaceThread = new Thread(interfaceNode);
         interfaceThread.start();
     }

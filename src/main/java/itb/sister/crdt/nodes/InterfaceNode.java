@@ -5,17 +5,24 @@ import itb.sister.crdt.models.CRDT;
 import org.java_websocket.client.WebSocketClient;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class InterfaceNode implements Runnable {
 
+    private static Map<String, Integer> versionVector = new HashMap<>();
     private WebSocketClient clientSignal;
     private ServerPeerNode serverPeerNode;
     private String siteId;
+    private int operationCount = 0;
 
     private Gson gson = new Gson();
     volatile boolean shutdown = false;
+
+    public static Map<String, Integer> getVersionVector() {
+        return versionVector;
+    }
 
     public void setServerPeerNode(ServerPeerNode serverPeerNode) {
         this.serverPeerNode = serverPeerNode;
@@ -52,7 +59,8 @@ public class InterfaceNode implements Runnable {
             } else {
                 try {
                     Character value = command.charAt(0);
-                    CRDT crdt = new CRDT(siteId, value, true, new int[]{1});
+                    versionVector.put(siteId, ++operationCount);
+                    CRDT crdt = new CRDT(siteId, value, true, new int[]{1}, versionVector);
                     String message = gson.toJson(crdt);
                     serverPeerNode.broadcast(message);
                 } catch (StringIndexOutOfBoundsException ex) {
