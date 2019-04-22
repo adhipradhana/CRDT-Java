@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import org.apache.log4j.BasicConfigurator;
-import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -30,12 +29,18 @@ public class ControllerNode extends WebSocketClient  {
 
     private static Map<String, ClientPeerNode> clientPeerNodes = new HashMap<>();
 
+    private static Map<String, Integer> versionVector = new HashMap<>();
+
     private static String nodeServerAddress;
     private static ServerPeerNode serverPeerNode;
     private static WebSocketClient client;
 
     public ControllerNode(URI serverURI) {
         super(serverURI);
+    }
+
+    public static Map<String, Integer> getVersionVector() {
+        return versionVector;
     }
 
     @Override
@@ -137,6 +142,7 @@ public class ControllerNode extends WebSocketClient  {
             textArea.textProperty().addListener((final ObservableValue<? extends String> observable,
                                                  final String oldValue, final String newValue) -> {
 
+                // Initialize variables
                 String flag;
                 Character value;
                 int pos = textArea.getCaretPosition();
@@ -167,7 +173,7 @@ public class ControllerNode extends WebSocketClient  {
                         }
 
                         System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
-                        CRDT crdt = new CRDT(siteId, value, true, new int[]{1});
+                        CRDT crdt = new CRDT(siteId, value, true, new int[]{1}, versionVector);
                         String message = gson.toJson(crdt);
                         innerServerPeerNode.broadcast(message);
 
