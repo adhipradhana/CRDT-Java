@@ -1,11 +1,23 @@
 package itb.sister.crdt.nodes;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
 import com.google.gson.Gson;
+import itb.sister.crdt.models.CRDT;
+import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
@@ -17,8 +29,10 @@ public class ControllerNode extends WebSocketClient  {
     private  Set<String> previousServerList = new HashSet<>();
 
     private static Map<String, ClientPeerNode> clientPeerNodes = new HashMap<>();
-    private static InterfaceNode interfaceNode;
+
     private static String nodeServerAddress;
+    private static ServerPeerNode serverPeerNode;
+    private static WebSocketClient client;
 
     public ControllerNode(URI serverURI) {
         super(serverURI);
@@ -83,6 +97,94 @@ public class ControllerNode extends WebSocketClient  {
         return clientPeerNodes;
     }
 
+    public static class InterfaceNode extends Application {
+
+        private WebSocketClient clientSignal;
+        private ServerPeerNode innerServerPeerNode;
+        private String siteId;
+        private TextArea textArea;
+
+        private Gson gson = new Gson();
+        volatile boolean shutdown = false;
+
+        public void setServerPeerNode(ServerPeerNode serverPeerNode) {
+            this.innerServerPeerNode = serverPeerNode;
+        }
+
+        public void setClientSignal(WebSocketClient clientSignal) {
+            this.clientSignal = clientSignal;
+        }
+
+        public void setSiteId(String siteId) { this.siteId = siteId; }
+
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            this.setServerPeerNode(serverPeerNode);
+            this.setClientSignal(client);
+            this.setSiteId(nodeServerAddress);
+
+            textArea = new TextArea();
+
+            HBox container  = new HBox(textArea);
+            container.setAlignment(Pos.CENTER);
+            container.setPadding(new Insets(10));
+
+            HBox.setHgrow(textArea, Priority.ALWAYS);
+
+            BorderPane pane = new BorderPane();
+            pane.setCenter(container);
+
+            textArea.textProperty().addListener((final ObservableValue<? extends String> observable,
+                                                 final String oldValue, final String newValue) -> {
+
+                String flag;
+                Character value;
+                int pos = textArea.getCaretPosition();
+
+                if (newValue.equals("stop") || oldValue.equals("stop")) {
+                    try {
+                        System.out.println("Shutting down thread");
+                        innerServerPeerNode.stop();
+                        for (Map.Entry<String, ClientPeerNode> entry : ControllerNode.getClientPeerNodes().entrySet()) {
+                            entry.getValue().close();
+                        }
+                        clientSignal.close();
+
+                        shutdown = true;
+                    } catch (IOException | InterruptedException ex) {
+                        System.out.println("Failed to stop");
+                    }
+                } else {
+                    try {
+
+                        if (newValue.length() > oldValue.length()) { // insertion
+                            flag = "insert";
+                            value = newValue.charAt(pos);
+                        } else {
+                            pos--;
+                            flag = "delete";
+                            value = oldValue.charAt(pos);
+                        }
+
+                        System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
+                        CRDT crdt = new CRDT(siteId, value, true, new int[]{1});
+                        String message = gson.toJson(crdt);
+                        innerServerPeerNode.broadcast(message);
+
+                    } catch (StringIndexOutOfBoundsException ex) {
+                        System.out.println("Failed to send CRDT");
+                    }
+                }
+            });
+
+            primaryStage.setTitle("Tubes Sister");
+
+            primaryStage.setScene(new Scene(pane, 300, 275));
+            primaryStage.show();
+        }
+
+    }
+
     public static void main(String[] args) throws URISyntaxException {
         BasicConfigurator.configure();
         Random rand = new Random();
@@ -91,17 +193,15 @@ public class ControllerNode extends WebSocketClient  {
         String host = "localhost";
         int port = rand.nextInt(10000) + 40000;
 
-        WebSocketClient client = new ControllerNode(new URI(signalServerAddress));
+        client = new ControllerNode(new URI(signalServerAddress));
         client.connect();
 
-        ServerPeerNode serverPeerNode = new ServerPeerNode(new InetSocketAddress(host, port));
+        serverPeerNode = new ServerPeerNode(new InetSocketAddress(host, port));
         nodeServerAddress = serverPeerNode.getWebSocketAddress();
         serverPeerNode.start();
 
-        interfaceNode = new InterfaceNode(nodeServerAddress);
-        interfaceNode.setServerPeerNode(serverPeerNode);
-        interfaceNode.setClientSignal(client);
-        Thread interfaceThread = new Thread(interfaceNode);
-        interfaceThread.start();
+        new Thread(() -> {
+            Application.launch(InterfaceNode.class);
+        }).start();
     }
 }

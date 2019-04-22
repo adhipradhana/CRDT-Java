@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e4b0941d-31e6-4b15-824a-557ace2e937e" name="Default Changelist" comment="create a signal server">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientPeerNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientPeerNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CRDT.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/InterfaceNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/InterfaceNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/InterfaceNode.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -15,65 +15,25 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-412769104">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.11" value="1" />
-          <entry key="project.open.time.12" value="1" />
-          <entry key="project.opened" value="3" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="dummy" value="35" />
-          <entry key="java" value="7055" />
-          <entry key="txt" value="24" />
-          <entry key="xml" value="12" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JAVA" value="7055" />
-          <entry key="PLAIN_TEXT" value="59" />
-          <entry key="XML" value="12" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="java" value="17" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JAVA" value="17" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientPeerNode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="102" column="44" selection-start-line="102" selection-start-column="44" selection-end-line="102" selection-end-column="44" />
+            <state relative-caret-position="135">
+              <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2577#2578#0" expanded="true" />
-                <element signature="e#2600#2601#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientPeerNode.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/signal/SignalServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+            <state relative-caret-position="60">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,17 +41,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/InterfaceNode.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/signal/SignalCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+            <state relative-caret-position="150">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#456#457#0" expanded="true" />
-                <element signature="e#508#509#0" expanded="true" />
-                <element signature="e#628#629#0" expanded="true" />
-                <element signature="e#676#677#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -102,6 +58,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="615">
               <caret line="45" selection-start-line="45" selection-end-line="45" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="129">
+              <caret line="158" selection-start-line="158" selection-end-line="158" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -121,6 +89,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>send</find>
+      <find>serverpeer</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -142,23 +111,19 @@
         <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientSignalNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/models/CRDT.java" />
         <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientPeerNode.java" />
-        <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/resources/index.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/InterfaceNode.java" />
+        <option value="$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java" />
       </list>
     </option>
-  </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpServers">
     <servers />
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="27" />
+    <option name="width" value="1914" />
+    <option name="height" value="990" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -172,47 +137,38 @@
         <subPane>
           <expand>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crdt" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="crdt" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -220,17 +176,13 @@
               <item name="nodes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CRDT" type="462c0819:PsiDirectoryNode" />
+              <item name="CRDT-Java" type="b2602c69:ProjectViewProjectNode" />
+              <item name="CRDT-Java" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="crdt" type="462c0819:PsiDirectoryNode" />
               <item name="signal" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CRDT" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
@@ -241,12 +193,14 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555907948111" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555936017389" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.general" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -341,17 +295,19 @@
       <workItem from="1555836218257" duration="3238000" />
       <workItem from="1555840830609" duration="14388000" />
       <workItem from="1555904282011" duration="3384000" />
+      <workItem from="1555909138542" duration="505000" />
+      <workItem from="1555910368662" duration="130000" />
+      <workItem from="1555921289761" duration="9165000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21010000" />
+    <option name="totallyTimeSpent" value="30810000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="27" width="1914" height="990" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16094421" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16864865" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -360,7 +316,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32891566" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32806805" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -369,7 +325,8 @@
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32891566" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32891566" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32806805" />
+      <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -379,6 +336,7 @@
       <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Maven Projects" order="8" />
+      <window_info anchor="right" id="Maven" order="9" />
     </layout>
     <layout-to-restore>
       <window_info id="Image Layers" order="0" />
@@ -414,9 +372,6 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create a signal server" />
     <option name="LAST_COMMIT_MESSAGE" value="create a signal server" />
@@ -427,16 +382,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
           <caret line="29" column="21" selection-start-line="29" selection-start-column="21" selection-end-line="29" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/signal/SignalServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -476,32 +421,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/signal/SignalCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/resources/index.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="45">
+          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/signal/SignalServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/signal/SignalCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="102" column="44" selection-start-line="102" selection-start-column="44" selection-end-line="102" selection-end-column="44" />
+        <state relative-caret-position="150">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2577#2578#0" expanded="true" />
-            <element signature="e#2600#2601#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/Class.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="3081" selection-start-line="3081" selection-end-line="3081" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ClientPeerNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        <state relative-caret-position="135">
+          <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -510,14 +468,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/InterfaceNode.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="46" column="20" selection-start-line="46" selection-start-column="20" selection-end-line="46" selection-end-column="20" />
+        <state relative-caret-position="434">
+          <caret line="113" column="1" lean-forward="true" selection-start-line="22" selection-end-line="113" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#456#457#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
-            <element signature="e#628#629#0" expanded="true" />
-            <element signature="e#676#677#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/itb/sister/crdt/nodes/ControllerNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="129">
+          <caret line="158" selection-start-line="158" selection-end-line="158" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -562,7 +526,7 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.7</last-edited>
+          <last-edited>1.8</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
