@@ -7,8 +7,11 @@ import java.net.URI;
 
 public class ClientPeerNode extends WebSocketClient {
 
-    public ClientPeerNode(URI serverURI) {
+    private String serverAddress;
+
+    public ClientPeerNode(URI serverURI, String serverAddress) {
         super(serverURI);
+        this.serverAddress = serverAddress;
     }
 
     @Override
@@ -19,6 +22,8 @@ public class ClientPeerNode extends WebSocketClient {
     @Override
     public void onClose(int code, String reason, boolean remote) {
         System.out.println("closed with exit code " + code + " additional info: " + reason);
+
+        ControllerNode.getClientPeerNodes().remove(serverAddress);
     }
 
     @Override

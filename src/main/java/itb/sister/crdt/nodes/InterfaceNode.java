@@ -2,21 +2,27 @@ package itb.sister.crdt.nodes;
 
 import com.google.gson.Gson;
 import itb.sister.crdt.models.CRDT;
-import org.java_websocket.exceptions.WebsocketNotConnectedException;
+import org.java_websocket.client.WebSocketClient;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class InterfaceNode implements Runnable {
 
-    private ArrayList<ClientPeerNode> clientPeers = new ArrayList<>();
+    private WebSocketClient clientSignal;
+    private ServerPeerNode serverPeerNode;
     private String siteId;
 
     private Gson gson = new Gson();
     volatile boolean shutdown = false;
 
-    public void addClientPeer(ClientPeerNode clientPeerNode) {
-        clientPeers.add(clientPeerNode);
+    public void setServerPeerNode(ServerPeerNode serverPeerNode) {
+        this.serverPeerNode = serverPeerNode;
+    }
+
+    public void setClientSignal(WebSocketClient clientSignal) {
+        this.clientSignal = clientSignal;
     }
 
     public InterfaceNode(String siteId) {
@@ -31,23 +37,29 @@ public class InterfaceNode implements Runnable {
             String command = scan.nextLine();
 
             if (command.equals("stop")) {
-                System.out.println("Shutting down thread");
-                shutdown = true;
-            } else if (command.equals("")) {
-                System.out.println("NULL");
-            } else {
-                Character value = command.charAt(0);
-                CRDT crdt = new CRDT(siteId, value, true, new int[]{1});
-
-                String json = gson.toJson(crdt);
-                for (int i = 0; i < clientPeers.size(); i++) {
-                    try {
-                        clientPeers.get(i).send(json);
-                    } catch (WebsocketNotConnectedException e) {
-                        clientPeers.remove(i);
+                try {
+                    System.out.println("Shutting down thread");
+                    serverPeerNode.stop();
+                    for (Map.Entry<String, ClientPeerNode> entry : ControllerNode.getClientPeerNodes().entrySet()) {
+                        entry.getValue().close();
                     }
+                    clientSignal.close();
+
+                    shutdown = true;
+                } catch (IOException | InterruptedException ex) {
+                    System.out.println("Failed to stop");
+                }
+            } else {
+                try {
+                    Character value = command.charAt(0);
+                    CRDT crdt = new CRDT(siteId, value, true, new int[]{1});
+                    String message = gson.toJson(crdt);
+                    serverPeerNode.broadcast(message);
+                } catch (StringIndexOutOfBoundsException ex) {
+                    System.out.println("Failed to send CRDT");
                 }
             }
         }
     }
+
 }
