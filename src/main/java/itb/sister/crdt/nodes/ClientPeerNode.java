@@ -6,7 +6,6 @@ import org.java_websocket.handshake.ServerHandshake;
 import itb.sister.crdt.models.CRDT;
 
 import java.net.URI;
-import java.util.Map;
 
 public class ClientPeerNode extends WebSocketClient {
 
@@ -54,14 +53,9 @@ public class ClientPeerNode extends WebSocketClient {
     }
 
     public void updateVersionVector(CRDT crdt) {
-        Map<String, Integer> oldVersionVector = InterfaceNode.getVersionVector();
-
-        for (Map.Entry<String, Integer> entry : crdt.getVersionVector().entrySet()) {
-            int operationCount = (entry.getValue() > oldVersionVector.get(entry.getKey())) ? entry.getValue() : oldVersionVector.get(entry.getKey());
-            oldVersionVector.put(entry.getKey(), operationCount);
-        }
+        int operationCount = InterfaceNode.getVersionVector().get(crdt.getSiteId());
+        InterfaceNode.getVersionVector().put(crdt.getSiteId(), operationCount + 1);
 
         System.out.println("New Version Vector");
-        System.out.println(oldVersionVector);
     }
 }
