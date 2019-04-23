@@ -12,11 +12,13 @@ public class CRDT {
     private List<CharInfo> dataList = new ArrayList<>();
     private VersionVector versionVector;
     private ServerPeerNode serverPeerNode;
+    private String text;
 
     public CRDT(String siteId, VersionVector versionVector, ServerPeerNode serverPeerNode) {
         this.siteId = siteId;
         this.versionVector = versionVector;
         this.serverPeerNode = serverPeerNode;
+        this.text = "";
     }
 
     public CRDT(String siteId, List<CharInfo> dataList, VersionVector versionVector, ServerPeerNode serverPeerNode) {
@@ -24,6 +26,7 @@ public class CRDT {
         this.dataList = dataList;
         this.versionVector = versionVector;
         this.serverPeerNode = serverPeerNode;
+        this.text = "";
     }
 
     public String getSiteId() {
@@ -46,11 +49,18 @@ public class CRDT {
         this.serverPeerNode = serverPeerNode;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void handleLocalInsert(char value, int index) {
         versionVector.increment(siteId);
 
         CharInfo data = generateCharInfo(value, index);
         insertData(index, data);
+        insertText(value, index);
+
+        System.out.println(text);
 
         serverPeerNode.broadcastInsertion(data, versionVector.getVersion(data.getSiteId()));
     }
@@ -59,12 +69,37 @@ public class CRDT {
         versionVector.increment(siteId);
 
         CharInfo data = removeData(index);
+        removeText(index);
+
+        System.out.println(text);
 
         serverPeerNode.broadcastDeletion(data, versionVector.getVersion(data.getSiteId()));
     }
 
-    public void handleRemoteInsert(CharInfo charInfo) {
-        
+    public void handleRemoteInsert(CharInfo charInfo, String siteId) {
+        int index = findInsertIndex(charInfo);
+        versionVector.increment(siteId);
+        System.out.println(index);
+
+        insertData(index, charInfo);
+        System.out.println(charInfo.getValue());
+        insertText(charInfo.getValue(), index);
+    }
+
+    public void insertText(char value, int index) {
+        int len = text.length();
+        char[] updatedArr = new char[len + 1];
+        text.getChars(0, index, updatedArr, 0);
+        updatedArr[index] = value;
+        text.getChars(index, len, updatedArr, index + 1);
+
+        text = new String(updatedArr);
+    }
+
+    public void removeText(int index) {
+        String newString = text.substring(0, index) + text.substring(index + 1);
+
+        text = newString;
     }
 
 
@@ -76,6 +111,32 @@ public class CRDT {
 
     public void insertData(int index, CharInfo data) {
         dataList.add(index, data);
+    }
+
+    public int findInsertIndex(CharInfo val) {
+        int left = 0;
+        int right = dataList.size() - 1;
+
+        if (dataList.size() == 0 || val.compareTo(dataList.get(left)) < 1) {
+            return left;
+        } else if (val.compareTo(dataList.get(right)) > 0) {
+            return dataList.size();
+        }
+
+        while (left + 1 < right) {
+            int mid = (int) Math.floor(left + (right - left) / 2);
+            int compareNum = val.compareTo(dataList.get(mid));
+
+            if (compareNum == 0) {
+                return mid;
+            } else if (compareNum > 0) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+
+        return val.compareTo(dataList.get(left)) == 0 ? left : right;
     }
 
     public List<Integer> generatePosBetween(List<Integer> pos1, List<Integer> pos2, List<Integer> newPos, int level) {

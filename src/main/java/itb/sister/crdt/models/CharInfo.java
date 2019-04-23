@@ -1,6 +1,6 @@
 package itb.sister.crdt.models;
 
-public class CharInfo {
+public class CharInfo implements Comparable<CharInfo> {
     private char value;
     private String siteId;
     private int[] positions;
@@ -39,5 +39,30 @@ public class CharInfo {
 
     public void setPositions(int[] positions) {
         this.positions = positions;
+    }
+
+    @Override
+    public int compareTo(CharInfo o) {
+        int[] pos1 = this.positions;
+        int[] pos2 = o.positions;
+
+        for (int i = 0; i < Math.min(pos1.length, pos2.length); i++) {
+            int id1 = pos1[i];
+            int id2 = pos2[i];
+
+            if (id1 < id2) {
+                return -1;
+            } else if (id1 > id2) {
+                return 1;
+            }
+        }
+
+        if (pos1.length < pos2.length) {
+            return -1;
+        } else if (pos1.length > pos2.length) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

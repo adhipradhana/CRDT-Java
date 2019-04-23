@@ -1,5 +1,6 @@
 package itb.sister.crdt.nodes;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -7,12 +8,17 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import com.google.gson.Gson;
+import com.sun.javafx.scene.control.behavior.TextAreaBehavior;
+import com.sun.javafx.scene.control.skin.TextAreaSkin;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.SkinBase;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -20,6 +26,8 @@ import javafx.stage.Stage;
 import org.apache.log4j.BasicConfigurator;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+
+import javax.xml.soap.Text;
 
 public class ControllerNode extends WebSocketClient  {
 
@@ -70,7 +78,7 @@ public class ControllerNode extends WebSocketClient  {
         for (String serverAddress : serverList) {
             if (!previousServerList.contains(serverAddress)) {
                 try {
-                    ClientPeerNode peerNode = new ClientPeerNode(new URI(serverAddress), serverAddress);
+                    ClientPeerNode peerNode = new ClientPeerNode(new URI(serverAddress), serverAddress, crdt);
                     peerNode.connect();
 
                     previousServerList.add(serverAddress);
@@ -92,6 +100,8 @@ public class ControllerNode extends WebSocketClient  {
             }
         }
 
+        System.out.println("My Server");
+        System.out.println(nodeServerAddress);
         System.out.println("Server list");
         for (String serverAddress : serverList) {
             System.out.println(serverAddress);
@@ -107,7 +117,8 @@ public class ControllerNode extends WebSocketClient  {
         private WebSocketClient clientSignal;
         private ServerPeerNode innerServerPeerNode;
         private String siteId;
-        private TextArea textArea;
+        private static TextArea textArea;
+        private String text = "";
 
         private Gson gson = new Gson();
         volatile boolean shutdown = false;
@@ -121,6 +132,10 @@ public class ControllerNode extends WebSocketClient  {
         }
 
         public void setSiteId(String siteId) { this.siteId = siteId; }
+
+        public static void setText(String text) {
+            textArea.setText(text);
+        }
 
         @Override
         public void start(Stage primaryStage) throws Exception {
@@ -139,49 +154,36 @@ public class ControllerNode extends WebSocketClient  {
             BorderPane pane = new BorderPane();
             pane.setCenter(container);
 
-            textArea.textProperty().addListener((final ObservableValue<? extends String> observable,
-                                                 final String oldValue, final String newValue) -> {
+            textArea.setOnKeyPressed(event -> {
 
                 // Initialize variables
                 String flag;
                 Character value;
                 int pos = textArea.getCaretPosition();
 
-                if (newValue.equals("stop") || oldValue.equals("stop")) {
-                    try {
-                        innerServerPeerNode.stop();
-                        for (Map.Entry<String, ClientPeerNode> entry : ControllerNode.getClientPeerNodes().entrySet()) {
-                            entry.getValue().close();
-                        }
-                        clientSignal.close();
+                if (event.getCode() == KeyCode.BACK_SPACE) {
+                    pos--;
+                    flag = "delete";
 
-                        shutdown = true;
-                    } catch (IOException | InterruptedException ex) {
-                        System.out.println("Failed to stop");
-                    }
-                } else {
-                    try {
-                        if (newValue.length() > oldValue.length()) { // insertion
-                            flag = "insert";
-                            value = newValue.charAt(pos);
+                    value = text.charAt(pos);
 
-                            System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
+                    System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
 
-                            crdt.handleLocalInsert(value, pos);
-                        } else {
-                            pos--;
-                            flag = "delete";
-                            value = oldValue.charAt(pos);
+                    text = textArea.getText();
+                    crdt.handleLocalDelete(value, pos);
+                } else if (event.getCode() != KeyCode.DOWN && event.getCode() != KeyCode.LEFT &&
+                        event.getCode() != KeyCode.RIGHT && event.getCode() != KeyCode.UP) {
 
-                            System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
+                    flag = "insert";
+                    value = event.getText().charAt(0);
+                    text = textArea.getText();
 
-                            crdt.handleLocalDelete(value, pos);
-                        }
-                    } catch (StringIndexOutOfBoundsException ex) {
-                        System.out.println("Failed to send CRDT");
-                    }
+                    System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
+
+                    crdt.handleLocalInsert(value, pos);
                 }
             });
+
 
             primaryStage.setTitle("Tubes Sister");
 

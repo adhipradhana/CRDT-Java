@@ -6,14 +6,18 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 
+import itb.sister.crdt.models.Operation;
+
 public class ClientPeerNode extends WebSocketClient {
 
     private Gson gson = new Gson();
     private String serverAddress;
+    private CRDT crdt;
 
-    public ClientPeerNode(URI serverURI, String serverAddress) {
+    public ClientPeerNode(URI serverURI, String serverAddress, CRDT crdt) {
         super(serverURI);
         this.serverAddress = serverAddress;
+        this.crdt = crdt;
     }
 
     @Override
@@ -34,6 +38,15 @@ public class ClientPeerNode extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         System.out.println("received message: " + message);
+
+        Operation operation = new Operation();
+        operation = gson.fromJson(message, operation.getClass());
+
+        if (operation.isOperationType()) {
+            crdt.handleRemoteInsert(operation.getData(), operation.getSiteId());
+
+            ControllerNode.InterfaceNode.setText(crdt.getText());
+        }
     }
 
     @Override
