@@ -54,7 +54,7 @@ public class CRDT {
     }
 
     public void handleLocalInsert(char value, int index) {
-        versionVector.increment(siteId);
+        versionVector.increment();
 
         CharInfo data = generateCharInfo(value, index);
         insertData(index, data);
@@ -62,33 +62,29 @@ public class CRDT {
 
         System.out.println(text);
 
-        serverPeerNode.broadcastInsertion(data, versionVector.getVersion(data.getSiteId()));
+        serverPeerNode.broadcastInsertion(data);
     }
 
     public void handleLocalDelete(char value, int index) {
-        versionVector.increment(siteId);
+        versionVector.increment();
 
         CharInfo data = removeData(index);
         removeText(index);
 
         System.out.println(text);
 
-        serverPeerNode.broadcastDeletion(data, versionVector.getVersion(data.getSiteId()));
+        serverPeerNode.broadcastDeletion(data);
     }
 
-    public void handleRemoteInsert(CharInfo charInfo, String siteId) {
+    public void handleRemoteInsert(CharInfo charInfo) {
         int index = findInsertIndex(charInfo);
-        versionVector.increment(siteId);
-        System.out.println(index);
 
         insertData(index, charInfo);
-        System.out.println(charInfo.getValue());
         insertText(charInfo.getValue(), index);
     }
 
     public void handleRemoteDelete(CharInfo val, String siteId) {
         int index = findIndexByPosition(val);
-        versionVector.increment(siteId);
         dataList.remove(index);
 
         removeText(index);
@@ -204,7 +200,7 @@ public class CRDT {
 
         List<Integer> newPos = generatePosBetween(posBefore, posAfter, new ArrayList<Integer>(), 0);
         int[] arrNewPos = newPos.stream().mapToInt(Integer::intValue).toArray();
-        return new CharInfo(value, this.siteId, arrNewPos);
+        return new CharInfo(value, this.siteId, arrNewPos, this.versionVector.getLocalVersion().getCounter());
 
     }
 

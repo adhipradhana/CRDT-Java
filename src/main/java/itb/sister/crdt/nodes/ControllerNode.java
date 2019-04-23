@@ -10,6 +10,7 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.sun.javafx.scene.control.behavior.TextAreaBehavior;
 import com.sun.javafx.scene.control.skin.TextAreaSkin;
+import itb.sister.crdt.models.Operation;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -37,6 +38,7 @@ public class ControllerNode extends WebSocketClient  {
     private static Map<String, ClientPeerNode> clientPeerNodes = new HashMap<>();
     private static VersionVector versionVector;
     private static CRDT crdt;
+    private static List<Operation> buffer = new ArrayList<>();
 
     private static String nodeServerAddress;
     private static ServerPeerNode serverPeerNode;
@@ -48,6 +50,10 @@ public class ControllerNode extends WebSocketClient  {
 
     public static VersionVector getVersionVector() {
         return versionVector;
+    }
+
+    public static List<Operation> getBuffer() {
+        return buffer;
     }
 
     @Override
@@ -209,8 +215,7 @@ public class ControllerNode extends WebSocketClient  {
         client.connect();
 
         // create version vector and CRDT
-        versionVector = new VersionVector();
-        versionVector.addSiteId(nodeServerAddress, 0);
+        versionVector = new VersionVector(nodeServerAddress);
         crdt = new CRDT(nodeServerAddress, versionVector, serverPeerNode);
 
         new Thread(() -> {

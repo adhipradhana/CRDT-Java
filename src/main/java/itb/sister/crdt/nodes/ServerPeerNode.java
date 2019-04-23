@@ -1,6 +1,7 @@
 package itb.sister.crdt.nodes;
 
 import com.google.gson.Gson;
+import itb.sister.crdt.models.Version;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -49,16 +50,16 @@ public class ServerPeerNode extends WebSocketServer {
         return webSocketAddress;
     }
 
-    public void broadcastInsertion(CharInfo data, int operationCount) {
-        Operation operation = new Operation(data, webSocketAddress, true, operationCount, ControllerNode.getVersionVector());
+    public void broadcastInsertion(CharInfo data) {
+        Operation operation = new Operation(data, true, ControllerNode.getVersionVector().getLocalVersion());
 
         String message = gson.toJson(operation);
         System.out.println(message);
         broadcast(message);
     }
 
-    public void broadcastDeletion(CharInfo data, int operationCount) {
-        Operation operation = new Operation(data, webSocketAddress, false, operationCount, ControllerNode.getVersionVector());
+    public void broadcastDeletion(CharInfo data) {
+        Operation operation = new Operation(data, false, ControllerNode.getVersionVector().getLocalVersion());
 
         String message = gson.toJson(operation);
         System.out.println(message);

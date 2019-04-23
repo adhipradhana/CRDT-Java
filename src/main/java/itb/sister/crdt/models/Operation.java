@@ -4,25 +4,19 @@ import itb.sister.crdt.nodes.VersionVector;
 
 public class Operation {
     private CharInfo data;
-    private String siteId;
     private boolean operationType;
-    private int operationCount;
-    private VersionVector versionVector;
+    private Version version;
 
     public Operation() {
         this.data = new CharInfo();
-        this.siteId = "";
         this.operationType = false;
-        this.operationCount = 0;
-        this.versionVector = null;
+        this.version = null;
     }
 
-    public Operation(CharInfo data, String siteId, boolean operationType, int operationCount, VersionVector versionVector){
+    public Operation(CharInfo data, boolean operationType, Version version){
         this.data = data;
-        this.siteId = siteId;
         this.operationType = operationType;
-        this.operationCount = operationCount;
-        this.versionVector = versionVector;
+        this.version = version;
     }
 
     public CharInfo getData() {
@@ -33,14 +27,6 @@ public class Operation {
         this.data = data;
     }
 
-    public String getSiteId() {
-        return siteId;
-    }
-
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
-    }
-
     public boolean isOperationType() {
         return operationType;
     }
@@ -49,19 +35,11 @@ public class Operation {
         this.operationType = operationType;
     }
 
-    public int getOperationCount() {
-        return operationCount;
+    public Version getVersion() {
+        return version;
     }
 
-    public void setOperationCount(int operationCount) {
-        this.operationCount = operationCount;
-    }
-
-    public VersionVector getVersionVector() {
-        return versionVector;
-    }
-
-    public void setVersionVector(VersionVector versionVector) {
-        this.versionVector = versionVector;
+    public void setVersion(Version version) {
+        this.version = version;
     }
 }

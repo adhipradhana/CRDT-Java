@@ -4,17 +4,20 @@ public class CharInfo implements Comparable<CharInfo> {
     private char value;
     private String siteId;
     private int[] positions;
+    private int counter;
 
     public CharInfo(){
         this.value = '\0';
         this.siteId = "";
         this.positions = new int[0];
+        this.counter = 0;
     }
 
-    public CharInfo(char value, String siteId,int[] positions) {
+    public CharInfo(char value, String siteId, int[] positions, int counter) {
         this.value = value;
         this.siteId = siteId;
         this.positions = positions;
+        this.counter = counter;
     }
 
     public char getValue() {
@@ -64,5 +67,13 @@ public class CharInfo implements Comparable<CharInfo> {
         } else {
             return 0;
         }
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 }
