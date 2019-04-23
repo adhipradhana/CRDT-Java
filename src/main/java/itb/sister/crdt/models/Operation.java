@@ -6,6 +6,13 @@ public class Operation {
     private boolean operationType;
     private int operationCount;
 
+    public Operation() {
+        this.data = new CharInfo();
+        this.siteId = "";
+        this.operationType = false;
+        this.operationCount = 0;
+    }
+
     public Operation(CharInfo data, String siteId, boolean operationType, int operationCount){
         this.data = data;
         this.siteId = siteId;

@@ -1,15 +1,23 @@
 package itb.sister.crdt.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CRDT {
 
     private String siteId;
-    private Character value;
-    private boolean operation;
-    private int[] positions;
-    private Map<String, Integer> versionVector = new HashMap<>();
+    private List<CharInfo> dataList = new ArrayList<>();
+
+    public CRDT(String siteId) {
+        this.siteId = siteId;
+    }
+
+    public CRDT(String siteId, List<CharInfo> dataList) {
+        this.siteId = siteId;
+        this.dataList = dataList;
+    }
 
     public String getSiteId() {
         return siteId;
@@ -19,51 +27,14 @@ public class CRDT {
         this.siteId = siteId;
     }
 
-    public Character getValue() {
-        return value;
+
+    public List<CharInfo> getDataList() {
+        return dataList;
     }
 
-    public void setValue(Character value) {
-        this.value = value;
+    public void setDataList(List<CharInfo> dataList) {
+        this.dataList = dataList;
     }
 
-    public boolean isOperation() {
-        return operation;
-    }
-
-    public void setOperation(boolean operation) {
-        this.operation = operation;
-    }
-
-    public int[] getPositions() {
-        return positions;
-    }
-
-    public void setPositions(int[] positions) {
-        this.positions = positions;
-    }
-
-    public Map<String, Integer> getVersionVector() {
-        return versionVector;
-    }
-
-    public void setVersionVector(Map<String, Integer> versionVector) {
-        this.versionVector = versionVector;
-    }
-
-    public CRDT(String siteId, Character value, boolean operation, int[] positions, Map<String, Integer> versionVector) {
-        this.siteId = siteId;
-        this.value = value;
-        this.operation = operation;
-        this.positions = positions;
-        this.versionVector = versionVector;
-    }
-
-    public CRDT() {
-        this.siteId = "";
-        this.value = 'A';
-        this.operation = true;
-        this.positions = new int[]{1};
-    }
-
+    
 }

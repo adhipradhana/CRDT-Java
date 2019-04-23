@@ -6,6 +6,14 @@ import java.util.Map;
 public class VersionVector {
     private Map<String, Integer> version = new HashMap<>();
 
+    public VersionVector() {
+
+    }
+
+    public VersionVector(Map<String, Integer> version) {
+        this.version = version;
+    }
+
     public void increment(String siteId){
         version.put(siteId, version.get(siteId) + 1);
     }

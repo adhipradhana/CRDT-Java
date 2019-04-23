@@ -5,7 +5,13 @@ public class CharInfo {
     private String siteId;
     private int[] positions;
 
-    public CharInfo(char value, String siteId,int[] positions){
+    public CharInfo(){
+        this.value = '\0';
+        this.siteId = "";
+        this.positions = new int[0];
+    }
+
+    public CharInfo(char value, String siteId,int[] positions) {
         this.value = value;
         this.siteId = siteId;
         this.positions = positions;
