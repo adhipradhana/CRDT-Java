@@ -47,3 +47,16 @@ Deletion Buffer digunakan untuk memberikan sifat yang komutatif pada deletion. O
 Walaupun program berjalan dengan baik, namun terdapat solusi yang dapat memberikan performa yang lebih bagus lagi, terutama ketika value yang diberikan banyak. Salah satu solusi-nya adalah dengan memberikan posisi character menjadi semacam matriks, sehingga saat melakukan pencarian posisi suatu character kompleksitasnya dari O(N) menjadi O(1).
 
 ## Hasil Screenshot
+
+![](img/image1.jpg)
+``
+Image 1 - editing from right node
+``
+![](img/image2.jpg)
+``
+Image 2 - Deleting "Collaborating" from left node and add "Editing"
+``
+![](img/image3.jpg)
+``
+Image 3 - add "so cool" from left node
+``
