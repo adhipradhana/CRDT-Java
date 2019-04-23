@@ -1,23 +1,28 @@
 package itb.sister.crdt.models;
 
+import itb.sister.crdt.nodes.VersionVector;
+
 public class Operation {
     private CharInfo data;
     private String siteId;
     private boolean operationType;
     private int operationCount;
+    private VersionVector versionVector;
 
     public Operation() {
         this.data = new CharInfo();
         this.siteId = "";
         this.operationType = false;
         this.operationCount = 0;
+        this.versionVector = null;
     }
 
-    public Operation(CharInfo data, String siteId, boolean operationType, int operationCount){
+    public Operation(CharInfo data, String siteId, boolean operationType, int operationCount, VersionVector versionVector){
         this.data = data;
         this.siteId = siteId;
         this.operationType = operationType;
         this.operationCount = operationCount;
+        this.versionVector = versionVector;
     }
 
     public CharInfo getData() {
@@ -50,5 +55,13 @@ public class Operation {
 
     public void setOperationCount(int operationCount) {
         this.operationCount = operationCount;
+    }
+
+    public VersionVector getVersionVector() {
+        return versionVector;
+    }
+
+    public void setVersionVector(VersionVector versionVector) {
+        this.versionVector = versionVector;
     }
 }

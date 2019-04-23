@@ -86,6 +86,14 @@ public class CRDT {
         insertText(charInfo.getValue(), index);
     }
 
+    public void handleRemoteDelete(CharInfo val, String siteId) {
+        int index = findIndexByPosition(val);
+        versionVector.increment(siteId);
+        dataList.remove(index);
+
+        removeText(index);
+    }
+
     public void insertText(char value, int index) {
         int len = text.length();
         char[] updatedArr = new char[len + 1];
@@ -213,6 +221,37 @@ public class CRDT {
         }
 
         return (int) Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    public int findIndexByPosition(CharInfo val) {
+        int left = 0;
+        int right = dataList.size() - 1;
+        int mid, compareNum;
+
+        if (dataList.size() == 0) {
+            return -1;
+        }
+
+        while (left + 1 < right) {
+            mid = (int) Math.floor(left + (right - left) / 2);
+            compareNum = val.compareTo(dataList.get(mid));
+
+            if (compareNum == 0) {
+                return mid;
+            } else if (compareNum > 0) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+
+        if (val.compareTo(dataList.get(left)) == 0) {
+            return left;
+        } else if (val.compareTo(dataList.get(right)) == 0) {
+            return right;
+        } else {
+            return -1;
+        }
     }
 
 }

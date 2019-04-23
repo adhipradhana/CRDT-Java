@@ -46,6 +46,10 @@ public class ClientPeerNode extends WebSocketClient {
             crdt.handleRemoteInsert(operation.getData(), operation.getSiteId());
 
             ControllerNode.InterfaceNode.setText(crdt.getText());
+        } else {
+            crdt.handleRemoteDelete(operation.getData(), operation.getSiteId());
+
+            ControllerNode.InterfaceNode.setText(crdt.getText());
         }
     }
 

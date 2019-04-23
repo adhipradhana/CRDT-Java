@@ -50,7 +50,7 @@ public class ServerPeerNode extends WebSocketServer {
     }
 
     public void broadcastInsertion(CharInfo data, int operationCount) {
-        Operation operation = new Operation(data, webSocketAddress, true, operationCount);
+        Operation operation = new Operation(data, webSocketAddress, true, operationCount, ControllerNode.getVersionVector());
 
         String message = gson.toJson(operation);
         System.out.println(message);
@@ -58,7 +58,7 @@ public class ServerPeerNode extends WebSocketServer {
     }
 
     public void broadcastDeletion(CharInfo data, int operationCount) {
-        Operation operation = new Operation(data, webSocketAddress, false, operationCount);
+        Operation operation = new Operation(data, webSocketAddress, false, operationCount, ControllerNode.getVersionVector());
 
         String message = gson.toJson(operation);
         System.out.println(message);
