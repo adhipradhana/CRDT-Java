@@ -1,14 +1,19 @@
 package itb.sister.crdt.nodes;
 
+import com.google.gson.Gson;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 
+import itb.sister.crdt.models.CharInfo;
+import itb.sister.crdt.models.Operation;
+
 public class ServerPeerNode extends WebSocketServer {
 
     private String webSocketAddress;
+    private Gson gson = new Gson();
 
     public ServerPeerNode(InetSocketAddress address) {
         super(address);
@@ -42,6 +47,22 @@ public class ServerPeerNode extends WebSocketServer {
 
     public String getWebSocketAddress() {
         return webSocketAddress;
+    }
+
+    public void broadcastInsertion(CharInfo data, int operationCount) {
+        Operation operation = new Operation(data, webSocketAddress, true, operationCount);
+
+        String message = gson.toJson(operation);
+        System.out.println(message);
+        broadcast(message);
+    }
+
+    public void broadcastDeletion(CharInfo data, int operationCount) {
+        Operation operation = new Operation(data, webSocketAddress, false, operationCount);
+
+        String message = gson.toJson(operation);
+        System.out.println(message);
+        broadcast(message);
     }
 
 }

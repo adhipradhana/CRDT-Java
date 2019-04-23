@@ -149,7 +149,6 @@ public class ControllerNode extends WebSocketClient  {
 
                 if (newValue.equals("stop") || oldValue.equals("stop")) {
                     try {
-                        System.out.println("Shutting down thread");
                         innerServerPeerNode.stop();
                         for (Map.Entry<String, ClientPeerNode> entry : ControllerNode.getClientPeerNodes().entrySet()) {
                             entry.getValue().close();
@@ -162,20 +161,22 @@ public class ControllerNode extends WebSocketClient  {
                     }
                 } else {
                     try {
-
                         if (newValue.length() > oldValue.length()) { // insertion
                             flag = "insert";
                             value = newValue.charAt(pos);
+
+                            System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
+
+                            crdt.handleLocalInsert(value, pos);
                         } else {
                             pos--;
                             flag = "delete";
                             value = oldValue.charAt(pos);
+
+                            System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
+
+                            crdt.handleLocalDelete(value, pos);
                         }
-
-                        System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
-                        String message = "dojalque";
-                        innerServerPeerNode.broadcast(message);
-
                     } catch (StringIndexOutOfBoundsException ex) {
                         System.out.println("Failed to send CRDT");
                     }
@@ -198,16 +199,17 @@ public class ControllerNode extends WebSocketClient  {
         String host = "localhost";
         int port = rand.nextInt(10000) + 40000;
 
-        client = new ControllerNode(new URI(signalServerAddress));
-        client.connect();
-
         serverPeerNode = new ServerPeerNode(new InetSocketAddress(host, port));
         nodeServerAddress = serverPeerNode.getWebSocketAddress();
         serverPeerNode.start();
 
+        client = new ControllerNode(new URI(signalServerAddress));
+        client.connect();
+
         // create version vector and CRDT
         versionVector = new VersionVector();
-        crdt = new CRDT(nodeServerAddress, versionVector);
+        versionVector.addSiteId(nodeServerAddress, 0);
+        crdt = new CRDT(nodeServerAddress, versionVector, serverPeerNode);
 
         new Thread(() -> {
             Application.launch(InterfaceNode.class);
