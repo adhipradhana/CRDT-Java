@@ -76,31 +76,25 @@ public class CRDT {
 
     public List<Integer> generatePosBetween(List<Integer> pos1, List<Integer> pos2, List<Integer> newPos, int level) {
         int base = (int) Math.pow(2, level) * 32;
-        char strategy = ((level+1) % 2) == 0 ? '-' : '+';
+        char strategy = (((level+1) % 2) == 0) ? '-' : '+';
 
         int id1 = pos1.size() > 0 ? pos1.get(0) : 0;
         int id2 = pos2.size() > 0 ? pos2.get(0) : base;
 
+        System.out.println(id1);
+        System.out.println(id2);
+
 
         if(id2 - id1 > 1) {
-            System.out.println("memek");
-
             int newDigit = generateIdBetween(id1, id2, strategy);
             newPos.add(newDigit);
-
-            System.out.println(newDigit);
-
             return newPos;
         } else if(id2 - id1 == 1) {
-            System.out.println("ayaya");
-
             newPos.add(id1);
             List<Integer> tempPos = new ArrayList<>(pos1);
             tempPos.remove(0);
             return generatePosBetween(tempPos, new ArrayList<>(), newPos, level+1);
         } else {
-            System.out.println("eyey");
-
             newPos.add(id1);
             List<Integer> tempPos1 = new ArrayList<>(pos1);
             tempPos1.remove(0);
@@ -129,16 +123,6 @@ public class CRDT {
             posAfter = new ArrayList<Integer>();
         }
 
-        System.out.println("Before ");
-        for (int i = 0; i < posBefore.size(); i++) {
-            System.out.println(posBefore.get(i));
-        }
-
-        System.out.println("After ");
-        for (int i = 0; i < posAfter.size(); i++) {
-            System.out.println(posAfter.get(i));
-        }
-
         List<Integer> newPos = generatePosBetween(posBefore, posAfter, new ArrayList<Integer>(), 0);
         int[] arrNewPos = newPos.stream().mapToInt(Integer::intValue).toArray();
         return new CharInfo(value, this.siteId, arrNewPos);
@@ -151,21 +135,13 @@ public class CRDT {
         } else {
             if(boundaryStrategy == '-') {
                 min = max - 10;
-                System.out.println("kentu");
-                System.out.println(min);
-                System.out.println(max);
             } else {
-                System.out.println(min);
-                System.out.println(max);
                 min++;
                 max = min + 10;
-                System.out.println("kponti");
-                System.out.println(min);
-                System.out.println(max);
             }
         }
 
-        return (int) Math.floor((int) Math.random() * (max - min)) + min;
+        return (int) Math.floor(Math.random() * (max - min)) + min;
     }
 
 }
