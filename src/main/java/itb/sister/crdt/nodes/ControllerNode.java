@@ -7,7 +7,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import com.google.gson.Gson;
-import itb.sister.crdt.models.CRDT;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -28,8 +27,8 @@ public class ControllerNode extends WebSocketClient  {
     private  Set<String> previousServerList = new HashSet<>();
 
     private static Map<String, ClientPeerNode> clientPeerNodes = new HashMap<>();
-
-    private static Map<String, Integer> versionVector = new HashMap<>();
+    private static VersionVector versionVector;
+    private static CRDT crdt;
 
     private static String nodeServerAddress;
     private static ServerPeerNode serverPeerNode;
@@ -39,7 +38,7 @@ public class ControllerNode extends WebSocketClient  {
         super(serverURI);
     }
 
-    public static Map<String, Integer> getVersionVector() {
+    public static VersionVector getVersionVector() {
         return versionVector;
     }
 
@@ -73,6 +72,7 @@ public class ControllerNode extends WebSocketClient  {
                 try {
                     ClientPeerNode peerNode = new ClientPeerNode(new URI(serverAddress), serverAddress);
                     peerNode.connect();
+
                     previousServerList.add(serverAddress);
                     clientPeerNodes.put(serverAddress, peerNode);
                 } catch (URISyntaxException ex) {
@@ -173,8 +173,7 @@ public class ControllerNode extends WebSocketClient  {
                         }
 
                         System.out.println("flag = " + flag + " - val = " + value + " - carpos = " + pos);
-                        CRDT crdt = new CRDT(siteId, value, true, new int[]{1}, versionVector);
-                        String message = gson.toJson(crdt);
+                        String message = "dojalque";
                         innerServerPeerNode.broadcast(message);
 
                     } catch (StringIndexOutOfBoundsException ex) {
@@ -205,6 +204,10 @@ public class ControllerNode extends WebSocketClient  {
         serverPeerNode = new ServerPeerNode(new InetSocketAddress(host, port));
         nodeServerAddress = serverPeerNode.getWebSocketAddress();
         serverPeerNode.start();
+
+        // create version vector and CRDT
+        versionVector = new VersionVector();
+        crdt = new CRDT(nodeServerAddress, versionVector);
 
         new Thread(() -> {
             Application.launch(InterfaceNode.class);
