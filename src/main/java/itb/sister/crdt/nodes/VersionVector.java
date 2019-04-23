@@ -1,4 +1,4 @@
-package itb.sister.crdt.models;
+package itb.sister.crdt.nodes;
 
 import java.util.HashMap;
 import java.util.Map;

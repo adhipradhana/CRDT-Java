@@ -36,5 +36,5 @@ public class CRDT {
         this.dataList = dataList;
     }
 
-    
+    public void generatePosBetween()
 }
