@@ -3,6 +3,7 @@ package itb.sister.crdt.nodes;
 import itb.sister.crdt.models.CharInfo;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CRDT {
 
@@ -39,7 +40,32 @@ public class CRDT {
     }
 
     public void handleLocalInsert(char value, int index) {
+        versionVector.increment(siteId);
 
+        CharInfo data = generateCharInfo(value, index);
+        insertData(index, data);
+
+        // TODO : Broadcast insert ke node lain
+    }
+
+    public void handleLocalDelete(char value, int index) {
+        versionVector.increment(siteId);
+
+        CharInfo data = removeData(index);
+
+        // TODO : Broadcast delete ke node lain
+    }
+
+    
+
+    public CharInfo removeData(int index) {
+        CharInfo data = dataList.remove(index);
+
+        return data;
+    }
+
+    public void insertData(int index, CharInfo data) {
+        dataList.add(index, data);
     }
 
     public List<Integer> generatePosBetween(List<Integer> pos1, List<Integer> pos2, List<Integer> newPos, int level) {
@@ -58,12 +84,13 @@ public class CRDT {
             List<Integer> tempPos = new ArrayList<>(pos1);
             tempPos.remove(0);
             return generatePosBetween(tempPos, new ArrayList<>(), newPos, level+1);
-        } else if (id1 == id2) {
+        } else {
             newPos.add(id1);
             List<Integer> tempPos1 = new ArrayList<>(pos1);
             tempPos1.remove(0);
             List<Integer> tempPos2 = new ArrayList<>(pos2);
             tempPos2.remove(0);
+
             return generatePosBetween(pos1, pos2, newPos, level+1);
         }
     }
@@ -74,13 +101,14 @@ public class CRDT {
 
         try {
             int[] posBeforeInteger = dataList.get(index - 1).getPositions();
-            posBefore = new ArrayList<Integer>(Arrays.asList(posBeforeInteger));
+            posBefore = Arrays.stream(posBeforeInteger).boxed().collect(Collectors.toList());
         } catch(Exception e) {
             posBefore = new ArrayList<Integer>();
         }
 
         try {
-            posAfter = new ArrayList<Integer>(Arrays.asList(dataList.get(index).getPositions()));
+            int[] posAfterInteger = dataList.get(index - 1).getPositions();
+            posAfter = Arrays.stream(posAfterInteger).boxed().collect(Collectors.toList());
         } catch(Exception e) {
             posAfter = new ArrayList<Integer>();
         }
