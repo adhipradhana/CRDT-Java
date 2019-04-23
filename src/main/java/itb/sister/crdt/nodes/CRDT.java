@@ -63,6 +63,10 @@ public class CRDT {
         serverPeerNode.broadcastDeletion(data, versionVector.getVersion(data.getSiteId()));
     }
 
+    public void handleRemoteInsert(CharInfo charInfo) {
+        
+    }
+
 
     public CharInfo removeData(int index) {
         CharInfo data = dataList.remove(index);
@@ -81,10 +85,6 @@ public class CRDT {
         int id1 = pos1.size() > 0 ? pos1.get(0) : 0;
         int id2 = pos2.size() > 0 ? pos2.get(0) : base;
 
-        System.out.println(id1);
-        System.out.println(id2);
-
-
         if(id2 - id1 > 1) {
             int newDigit = generateIdBetween(id1, id2, strategy);
             newPos.add(newDigit);
@@ -92,16 +92,26 @@ public class CRDT {
         } else if(id2 - id1 == 1) {
             newPos.add(id1);
             List<Integer> tempPos = new ArrayList<>(pos1);
-            tempPos.remove(0);
+            if (!tempPos.isEmpty()) {
+                tempPos.remove(0);
+            }
+
             return generatePosBetween(tempPos, new ArrayList<>(), newPos, level+1);
         } else {
             newPos.add(id1);
             List<Integer> tempPos1 = new ArrayList<>(pos1);
-            tempPos1.remove(0);
-            List<Integer> tempPos2 = new ArrayList<>(pos2);
-            tempPos2.remove(0);
 
-            return generatePosBetween(pos1, pos2, newPos, level+1);
+            if (!tempPos1.isEmpty()) {
+                tempPos1.remove(0);
+            }
+
+            List<Integer> tempPos2 = new ArrayList<>(pos2);
+
+            if (!tempPos2.isEmpty()) {
+                tempPos2.remove(0);
+            }
+
+            return generatePosBetween(tempPos1, tempPos2, newPos, level+1);
         }
     }
 
